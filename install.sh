@@ -6,6 +6,12 @@ BINARY="replay"
 INSTALL_DIR="${REPLAY_INSTALL_DIR:-$HOME/.local/bin}"
 
 main() {
+    if command -v "$BINARY" > /dev/null 2>&1; then
+        already_installed=1
+    else
+        already_installed=0
+    fi
+
     os="$(uname -s)"
     arch="$(uname -m)"
 
@@ -60,6 +66,12 @@ main() {
         echo ""
         echo "Add ${INSTALL_DIR} to your PATH:"
         echo "  export PATH=\"${INSTALL_DIR}:\$PATH\""
+    fi
+
+    if [ "$already_installed" -eq 0 ]; then
+        echo ""
+        echo "Running '${BINARY} init'..."
+        "${INSTALL_DIR}/${BINARY}" init
     fi
 }
 
